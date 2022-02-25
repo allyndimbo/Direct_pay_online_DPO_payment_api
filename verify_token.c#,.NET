@@ -1,0 +1,26 @@
+var url = "https://secure.3gdirectpay.com/API/v6/";
+
+var httpRequest = (HttpWebRequest)WebRequest.Create(url);
+httpRequest.Method = "POST";
+
+httpRequest.ContentType = "text/xml";
+
+var data = @"<?xml version=""1.0"" encoding=""utf-8""?>
+            <API3G>
+              <CompanyToken>COMPANY_TOKEN</CompanyToken>
+              <Request>verifyToken</Request>
+              <TransactionToken>TRANSACTION_TOKEN</TransactionToken>
+            </API3G>";
+
+using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
+{
+   streamWriter.Write(data);
+}
+
+var httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+{
+   var result = streamReader.ReadToEnd();
+}
+
+Console.WriteLine(httpResponse.StatusCode);
